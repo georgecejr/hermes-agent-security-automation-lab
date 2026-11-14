@@ -156,7 +156,6 @@ The gateway Kanban notifier watches eligible terminal events and forwards messag
 | Persistence | SQLite | Verified via event inspection |
 | Messaging | Signal CLI / Signal adapter | End-to-end verified |
 | Service model | User-level Hermes gateway; systemd-compatible service patterns | Observed / applicable |
-| Editor / agent assist | Cursor used during documentation and engineering sessions | Observed tooling; not an application runtime dependency |
 | Proposed demo app stack | Web UI, server-side tracking proxy, mock mode, admin dashboard | Specified for the case study; not independently verified as deployed |
 
 Observed technology is what the lab actually ran. Proposed application components belong only to the later web-security case study and are not claimed as shipped product code in this repository.
@@ -308,7 +307,7 @@ After requirements revision and unblock, the parent coordination task was observ
 
 ![Hermes Kanban displaying an active parent task in progress with completed Signal tests in Done](docs/screenshots/08-parent-task-in-progress.png)
 
-*Figure 3. Hermes Kanban displaying an active agent execution workflow for the parent coordination task.*
+*Figure 8. Hermes Kanban displaying an active agent execution workflow for the parent coordination task.*
 
 The board shows persistent in-flight ownership, Auto orchestration, gateway status running, and a Done column containing the completed research and Signal validation tasks.
 
@@ -318,7 +317,7 @@ The child implementation task remained in Todo while the parent was unfinished.
 
 ![Child Kanban task waiting in Todo while the parent task remains in progress](docs/screenshots/09-child-task-waiting-on-parent.png)
 
-*Figure 4. Child task retained in Todo because its parent dependency had not completed.*
+*Figure 9. Child task retained in Todo because its parent dependency had not completed.*
 
 This state is expected dependency behavior, not a dispatcher failure. It shows Hermes preserving execution order across specialized assignees (`@default` for the parent and `@dhlpackagetracker` for the child).
 
@@ -344,7 +343,7 @@ Reusable capabilities are packaged as Hermes skills under `~/.hermes/skills/`. T
 
 ![Terminal listing the Hermes sms-custom-sender skills directory path](docs/screenshots/03-hermes-skills-directory.png)
 
-*Figure 5. Operator preparing to inspect `~/.hermes/skills/productivity/sms-custom-sender/`.*
+*Figure 3. Operator preparing to inspect `~/.hermes/skills/productivity/sms-custom-sender/`.*
 
 The skills directory is the reusable capability layer for agents. Skills can be tested locally, referenced by later Kanban tasks, and iterated without rebuilding the entire gateway stack.
 
@@ -358,7 +357,7 @@ Local validation and Kanban task creation were part of the same operator loop: p
 
 ![Local SMS skill tests passing followed by hermes kanban create for a local gateway simulator](docs/screenshots/04-local-tests-and-kanban-create.png)
 
-*Figure 6. Local skill test activity and creation of a Kanban task for a free local SMS gateway simulator.*
+*Figure 4. Local skill test activity and creation of a Kanban task for a free local SMS gateway simulator.*
 
 This screenshot validates local skill testing and Hermes task creation. It does not validate a DHL web application deployment or acceptance suite.
 
@@ -396,7 +395,7 @@ Pipeline components:
 
 ![Gateway source search for Kanban notifier modules and kanban config inspection](docs/screenshots/05-gateway-kanban-notifier.png)
 
-*Figure 7. Investigation of Hermes gateway Kanban watcher/notifier modules and local `kanban` configuration.*
+*Figure 5. Investigation of Hermes gateway Kanban watcher/notifier modules and local `kanban` configuration.*
 
 The capture shows gateway modules such as `kanban_watchers.py`, `kanban_watchers_notifier.py`, and `kanban_watchers_dispatcher.py`, along with `review_dispatch: true` in configuration. This is architectural evidence for the notification path, not by itself proof of message delivery.
 
@@ -406,7 +405,7 @@ Subscriptions associate task IDs with the Signal platform and a chat destination
 
 ![Hermes kanban list and Signal notify-subscribe confirmations with chat identifiers covered](docs/screenshots/06-signal-subscription-redacted.png)
 
-*Figure 8. Task list and Signal notification subscriptions registered against Kanban task IDs.*
+*Figure 6. Task list and Signal notification subscriptions registered against Kanban task IDs.*
 
 The listing shows completed research and Signal test tasks alongside the later web-application cards. Chat identifiers are redacted in the committed screenshot.
 
@@ -501,7 +500,7 @@ The agent flagged these requirements and blocked progress pending review. The ta
 
 ![Revised Hermes task bodies saved, followed by unblock of the parent task](docs/screenshots/07-revised-specifications-and-unblock.png)
 
-*Figure 9. Operator revising parent and child task specifications, then unblocking the parent for resumed execution.*
+*Figure 7. Operator revising parent and child task specifications, then unblocking the parent for resumed execution.*
 
 This is direct evidence of human-in-the-loop security control: execution resumed only after the risky specification was replaced.
 
