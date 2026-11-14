@@ -1,136 +1,181 @@
 # Hermes Agent — Autonomous AI Red Team & Security Automation Lab
 
-**Multi-Agent Orchestration | Autonomous Security Research | Persistent Workflow Automation | Signal Integration**
+**Self-hosted multi-agent orchestration, autonomous security research, persistent Kanban workflows, custom skills, SQLite event tracking, and Signal notifications.**
 
-**Project status:** Self-hosted Hermes Agent environment configured, operated, and validated on Kali Linux. Persistent Kanban orchestration, custom skill workflows, SQLite event tracing, and Signal completion notifications were demonstrated end to end. This repository is an engineering case study with documentation and session evidence. It is not a packaged application release.
+**Repository:** [georgecejr/hermes-agent-security-automation-lab](https://github.com/georgecejr/hermes-agent-security-automation-lab)
 
-**Repository note:** This repository documents a Hermes Agent autonomous security automation lab. A package-tracking web exercise appears later only as a supporting case study.
+**Project status:** Hermes Agent v0.23.1 was installed, configured, and operated on a Kali Linux virtual machine. Persistent Kanban orchestration, custom skill workflows, SQLite event tracing, and a Signal completion notification were demonstrated. This repository is the engineering record and session evidence. It is not a packaged application release, and it is not a completed shipment-tracking product.
 
-**Evidence posture:** Phone numbers visible in the original captures were covered before these files were committed. Shell prompts still show the lab account name. No email addresses appear in the Hermes screenshots.
+**Scope:** A package-tracking web exercise appears only as a supporting case study. Hermes blocked the first specification, the operator revised it, and the parent task was later observed in progress. Application deployment and acceptance testing were not independently verified.
 
-**How to read this document:** The lab did not work perfectly on the first attempt. Several capabilities only became reliable after failed tests, SQLite forensics, specification revisions, and retesting. Resolution statuses used below are:
+**Evidence posture:** Phone numbers visible in the original captures were covered before these files were committed. Shell prompts still show the lab account `cybergeorge`. No email addresses appear in the Hermes screenshots.
 
 | Status | Meaning |
 | --- | --- |
 | **Resolved** | Corrective action implemented and success verified |
 | **Mitigated** | Workaround or partial solution established |
 | **Investigated** | Cause examined; final resolution not confirmed |
-| **Outstanding** | Issue remains unresolved or lacks verification |
-
----
+| **Outstanding** | Issue remains unresolved or lacks independent verification |
 
 ## Table of Contents
 
-1. [Project Overview](#1-project-overview)
-2. [Key Technical Achievements](#2-key-technical-achievements)
-3. [System Architecture](#3-system-architecture)
-4. [Technology Stack](#4-technology-stack)
-5. [Infrastructure Setup](#5-infrastructure-setup)
-6. [Hermes Agent and Gateway Configuration](#6-hermes-agent-and-gateway-configuration)
-7. [Multi-Agent Orchestration](#7-multi-agent-orchestration)
-8. [Kanban Task Management](#8-kanban-task-management)
-9. [Worker Lifecycle and Execution Monitoring](#9-worker-lifecycle-and-execution-monitoring)
-10. [Automated Security Research](#10-automated-security-research)
-11. [Custom Skill Engineering](#11-custom-skill-engineering)
-12. [Development Workflow and Task Creation](#12-development-workflow-and-task-creation)
-13. [Signal Notification Integration](#13-signal-notification-integration)
-14. [SQLite Persistence and Event Analysis](#14-sqlite-persistence-and-event-analysis)
-15. [Case Study: Security-Aware Web Application Task Orchestration](#15-case-study-security-aware-web-application-task-orchestration)
-16. [Engineering Challenges, Root-Cause Analysis & Resolutions](#16-engineering-challenges-root-cause-analysis--resolutions)
-17. [Security Architecture](#17-security-architecture)
-18. [Testing and Validation](#18-testing-and-validation)
-19. [Project Outcomes](#19-project-outcomes)
-20. [Reproduction Guide](#20-reproduction-guide)
-21. [Future Engineering Extensions](#21-future-engineering-extensions)
-22. [Conclusion](#22-conclusion)
-23. [Suggested Repository Metadata](#23-suggested-repository-metadata)
-24. [Session Evidence Index](#24-session-evidence-index)
+1. [Executive Summary and Project Objectives](#1-executive-summary-and-project-objectives)
+2. [Kali Linux and VMware Infrastructure](#2-kali-linux-and-vmware-infrastructure)
+3. [Hermes Agent Installation and Configuration](#3-hermes-agent-installation-and-configuration)
+4. [Hermes Gateway Architecture](#4-hermes-gateway-architecture)
+5. [Autonomous Agent Profiles and Orchestration](#5-autonomous-agent-profiles-and-orchestration)
+6. [Persistent Kanban Task Management](#6-persistent-kanban-task-management)
+7. [Parent-Child Task Dependencies](#7-parent-child-task-dependencies)
+8. [Automated Security Research](#8-automated-security-research)
+9. [SMS Gateway Provider Investigation](#9-sms-gateway-provider-investigation)
+10. [Custom Agent Skill Development](#10-custom-agent-skill-development)
+11. [Local SMS Gateway Simulation](#11-local-sms-gateway-simulation)
+12. [Signal CLI Integration](#12-signal-cli-integration)
+13. [Automated Signal Completion Notifications](#13-automated-signal-completion-notifications)
+14. [SQLite Task Events and Notification Checkpoints](#14-sqlite-task-events-and-notification-checkpoints)
+15. [Security Review and Human Intervention](#15-security-review-and-human-intervention)
+16. [Supporting DHL Web Application Demonstration](#16-supporting-dhl-web-application-demonstration)
+17. [Engineering Obstacles and Troubleshooting](#17-engineering-obstacles-and-troubleshooting)
+18. [Root-Cause Analysis and Solutions](#18-root-cause-analysis-and-solutions)
+19. [Verified Testing and Project Completion](#19-verified-testing-and-project-completion)
+20. [Architecture Diagrams and Future Extensions](#20-architecture-diagrams-and-future-extensions)
+
+Supporting records:
+
+- [Architecture](docs/architecture.md)
+- [Implementation](docs/implementation.md)
+- [Engineering challenges](docs/engineering-challenges.md)
+- [Testing and validation](docs/testing-validation.md)
+- [Session evidence index](#session-evidence-index)
 
 ---
 
-## 1. Project Overview
+## 1. Executive Summary and Project Objectives
 
 ### Problem
 
-Traditional AI assistants generally require manual prompting and coordination for each individual task. Complex engineering and security workflows benefit from persistent execution, specialized agent roles, durable task state, and operational visibility that survives across sessions.
+Interactive AI assistants require a new prompt for every step. Security research and engineering workflows need persistent execution, specialized agent roles, durable task state, and an audit trail that survives the chat session.
 
-### Solution
+### Objectives
 
-A self-hosted Hermes Agent environment running inside Kali Linux provides persistent Kanban orchestration, specialized agent profiles, reusable skills, SQLite-backed event history, and integrated messaging. The operator delegates work through the Hermes control plane; workers claim tasks, emit lifecycle events, and surface completion through Signal when subscriptions are configured correctly.
+1. Run Hermes Agent as a self-hosted control plane on Kali Linux under VMware.
+2. Orchestrate specialized agent profiles through a persistent Kanban board.
+3. Execute autonomous research and custom skill work with human gates where identity or policy decisions are required.
+4. Deliver task-completion notices over Signal, and prove delivery with SQLite event checkpoints.
+5. Treat dependency waits, blocked reviews, and failed notification tests as engineering incidents with a recorded cause and retest.
 
-### Implementation
+### What was demonstrated
 
-The engineering work covered infrastructure setup, gateway operation, agent execution workflows, security research tasks, reusable skill development, local gateway simulation, Signal notification integration, and validation through SQLite event records and device-side delivery confirmation. Multiple steps failed before they succeeded. The Signal path, dependency waits, and security-review blocks are documented as engineering incidents, not as footnotes.
+- Hermes Gateway running at `http://127.0.0.1:9119` (v0.23.1, Nous Research), with Gateway Status: Running.
+- Autonomous workers claiming tasks, emitting heartbeats, and completing research, skill, simulator, and Signal test cards.
+- A custom `sms-custom-sender` skill whose local suite reported `Ran 35 tests in 0.781s` / `OK`.
+- A local SMS gateway simulator task created against `~/hermes-workspaces/sms-gateway` and later observed in Done.
+- Signal completion delivery for task `t_8ef3019d`, completion event **152**, with the last event checkpoint and last notification checkpoint also at **152**.
+- Parent task `t_5025728e` in progress while child `t_cd335286` stayed in Todo, which is correct dependency behavior.
+- Human revision of an unsafe tracking-demo specification before work continued.
 
-### Outcome
+### What this repository does not claim
 
-The lab demonstrated autonomous task execution, persistent workflow management, parent-child dependency handling, custom skill engineering, and independently verified Signal completion notifications. The DHL package-tracking exercise is one supporting demonstration inside that broader automation environment, not the primary product identity of the project.
+- A shipped tracking application, production DHL integration, or public deployment.
+- Acceptance tests for a web interface.
+- Completed live alphanumeric sender onboarding. That path stayed human-gated.
+- Verified recovery after the VMware host disk warning.
 
-### Engineering chronology
-
-The documented process follows this sequence. Failures and corrections are part of the path, not exceptions to it:
+The engineering sequence was:
 
 ```text
-Initial Goal
-  -> Environment Setup (VMware / Kali / Hermes install)
-  -> Gateway Configuration
-  -> Agent Orchestration
-  -> Research Tasks
-  -> Skill Development
-  -> Kanban Automation
-  -> Signal Integration Attempts
-  -> Unexpected Failure (no notifications)
-  -> Investigation (SQLite cursors / gateway notifier)
-  -> Root-Cause Analysis (subscribe-after-complete race)
-  -> Corrective Action (subscribe while blocked, then unblock)
-  -> Retesting (t_8ef3019d)
-  -> Verified Outcome (event/checkpoint 152 + Signal receipt)
-  -> Security Review of web-app specs
-  -> Dependency orchestration observation
-  -> Documentation / screenshot transfer
-  -> Project Outcomes
+Initial goal
+  -> VMware / Kali / Hermes install
+  -> Gateway configuration
+  -> Agent profiles and Kanban
+  -> SMS provider research
+  -> Custom skill and local simulator
+  -> Signal attempts that completed in Kanban but did not notify
+  -> SQLite event and checkpoint investigation
+  -> Root cause: subscribe-after-complete
+  -> Retest t_8ef3019d (event 152, Signal received)
+  -> Security review, specification rewrite, unblock
+  -> Parent running, child waiting
+  -> Screenshot transfer and this record
 ```
 
-That chronology is intentional. The finished capabilities matter, but so do the debugging methodology, timing constraints, and human-in-the-loop controls required to reach them.
-
 ---
 
-## 2. Key Technical Achievements
+## 2. Kali Linux and VMware Infrastructure
 
-| Achievement | Evidence basis |
+| Component | Observed configuration |
 | --- | --- |
-| Hermes Agent configuration on Kali Linux | Gateway UI, CLI usage, skills paths, and session screenshots |
-| Gateway operation | Dashboard reports Gateway Status: Running |
-| Autonomous worker execution | Claim, heartbeat, spawn, and completion lifecycle events |
-| Persistent Kanban task management | Board columns, task IDs, and SQLite-backed state |
-| Parent-child dependency handling | Parent in progress while child remained in Todo |
-| Automated SMS gateway research | Completed Kanban tasks for provider and sender-ID research |
-| Custom skill development | `sms-custom-sender` skill directory and local test suite |
-| Local SMS gateway simulation | Completed simulator task with dedicated workspace |
-| Signal notification integration | Subscriptions, notifier modules, and device delivery |
-| SQLite event tracing | Event records and notification checkpoint inspection |
-| End-to-end notification validation | Task `t_8ef3019d`, event/checkpoint 152, Signal receipt |
-| Security-aware requirements revision | Blocked unsafe specs, edited bodies, unblocked parent |
+| Host | Windows workstation running VMware Workstation |
+| Guest | Kali Linux virtual machine |
+| Lab account | `cybergeorge` (visible in shell prompts) |
+| Hermes home | `~/.hermes/` for configuration, skills, and `kanban.db` |
+| Workspaces | `~/hermes-workspaces/sms-gateway` and `~/hermes-workspaces/dhl-tracking-lab` |
+| Gateway UI | `http://127.0.0.1:9119` |
+| Hermes version | v0.23.1 (Nous Research), shown in the dashboard footer |
 
-A completed Kanban task establishes the recorded execution outcome for that workflow. It does not automatically prove every possible feature of a generated artifact was independently acceptance-tested outside Hermes.
+```text
+~/.hermes/
+~/.hermes/config.yaml
+~/.hermes/kanban.db
+~/.hermes/skills/productivity/sms-custom-sender/
+~/.hermes/hermes-agent/gateway/
+~/hermes-workspaces/sms-gateway/
+~/hermes-workspaces/dhl-tracking-lab/
+```
+
+The guest held the running agent. Screenshot staging for this repository happened from the Windows side, so evidence had to cross the host/guest boundary. Later in the session VMware reported that the Windows host did not have enough free space for a Kali virtual-disk segment. That incident is recorded in [Incident D](docs/engineering-challenges.md#incident-d--vmware-storage-exhaustion). Recovery was recommended and was not independently verified.
+
+Infrastructure success here means a running gateway, stable workspace paths, and enough host disk to keep the guest alive. Install completion alone was not treated as proof.
 
 ---
 
-## 3. System Architecture
+## 3. Hermes Agent Installation and Configuration
 
-The lab separates a control plane from task execution, persistence, and operator communication.
+Hermes was operated as a user-level gateway on the Kali guest, with configuration persisted in `~/.hermes/config.yaml`. The Kanban block observed during notification debugging contained `review_dispatch: true`.
+
+Dashboard sessions showed:
+
+- Gateway Status: Running
+- Active session count changing as workers executed (0 in the earlier blocked-review capture, 2 while the parent task was in flight)
+- Orchestration set to Auto on the `researcher` board
+- Profile `default`, whose description covers offensive security testing and reverse-engineering work alongside review
+- Hermes v0.23.1
+
+Representative operator commands used in the session:
+
+```bash
+hermes kanban list
+hermes kanban create --title "..." --assignee default --workspace dir:/path --body "..."
+hermes kanban edit TASK_ID --body "..."
+hermes kanban unblock TASK_ID
+hermes kanban dispatch
+hermes kanban show TASK_ID
+hermes kanban watch
+hermes kanban notify-list
+hermes kanban notify-subscribe TASK_ID --platform signal --chat-id YOUR_SIGNAL_NUMBER
+```
+
+Installation produced a working control plane. The first Signal automation attempt still failed, for reasons that had nothing to do with the install itself. See [section 13](#13-automated-signal-completion-notifications).
+
+Configuration and command detail: [docs/implementation.md](docs/implementation.md).
+
+---
+
+## 4. Hermes Gateway Architecture
+
+The gateway is the control plane. It serves the local dashboard, hosts Kanban dispatch, loads agent profiles, and runs the watcher that turns terminal task events into outbound messages.
 
 ```mermaid
 flowchart TD
     Operator[Operator]
-    Gateway[Hermes Gateway]
+    Gateway[Hermes Gateway :9119]
     Profiles[Agent Profiles]
     Kanban[Kanban Task Engine]
-    SQLite[(SQLite Database)]
+    SQLite[(SQLite kanban.db)]
     Worker[Worker Execution]
     Skills[Custom Skills]
-    Watcher[Notification Watcher]
-    SignalCLI[Signal CLI]
+    Watcher[Kanban Notification Watcher]
+    SignalCLI[Signal CLI Adapter]
     Recipient[Signal Recipient]
 
     Operator --> Gateway
@@ -140,170 +185,75 @@ flowchart TD
     Gateway --> Worker
     Worker --> Skills
     Gateway --> Watcher
+    Watcher --> SQLite
     Watcher --> SignalCLI
     SignalCLI --> Recipient
 ```
 
-### Control plane
+When early Signal tests stayed silent, source search under the gateway tree located the watcher modules and confirmed the process was present:
 
-The Hermes Gateway hosts the local dashboard, plugin surfaces, profile configuration, and orchestration controls. Observed session evidence shows the Kanban plugin active, gateway status running, and orchestration set to Auto when workers were in flight.
+- `gateway/kanban_watchers.py`
+- `gateway/kanban_watchers_notifier.py`
+- `gateway/kanban_watchers_dispatcher.py`
+- `gateway/run.py` imports `GatewayKanbanWatchersMixin`
 
-### Task execution
+![Gateway source search locating Kanban watcher modules and the kanban config block](docs/screenshots/05-gateway-kanban-notifier.png)
 
-Workers claim Kanban tasks, bind to workspaces, emit heartbeat and lifecycle events, and execute against assigned agent profiles. Specialized profiles such as `default` and `dhlpackagetracker` demonstrate role-based ownership.
+*Figure 5. Investigation of the Hermes gateway Kanban watcher and notifier modules, plus `review_dispatch: true` in `~/.hermes/config.yaml`. This shows the notification path exists in the running install. It does not, by itself, prove a message was delivered.*
 
-### Persistence
+Gateway operation during the session: **Resolved**. First-pass Signal automation: failed, then **Resolved** on the controlled retest.
 
-Task state, lifecycle events, notification subscriptions, and notification cursors are recorded in SQLite (`~/.hermes/kanban.db` in the observed environment). Event IDs and checkpoints are the primary audit trail for notification debugging — and were the decisive evidence when Signal messages failed to appear.
-
-### Communication
-
-The gateway Kanban notifier watches eligible terminal events and forwards messages through the Signal adapter / `signal-cli` path to the operator device. Early tests proved that transport availability alone is not enough; subscription timing relative to event cursors determines whether a completion is ever delivered.
-
----
-
-## 4. Technology Stack
-
-| Layer | Technology | Classification |
-| --- | --- | --- |
-| Host OS | Windows host running VMware Workstation | Observed |
-| Lab OS | Kali Linux virtual machine | Observed |
-| Agent runtime | Hermes Agent v0.23.1 (Nous Research) | Observed |
-| Languages / tooling | Python, Bash, Git | Observed |
-| Persistence | SQLite | Verified via event inspection |
-| Messaging | Signal CLI / Signal adapter | End-to-end verified |
-| Service model | User-level Hermes gateway; systemd-compatible service patterns | Observed / applicable |
-| Documentation workflow | Host/guest screenshot transfer and repository documentation sessions | Observed |
-| Proposed demo app stack | Web UI, server-side tracking proxy, mock mode, admin dashboard | Specified for the case study; not independently verified as deployed |
-
-Observed technology is what the lab actually ran. Proposed application components belong only to the later web-security case study and are not claimed as shipped product code in this repository.
+Component notes: [docs/architecture.md](docs/architecture.md).
 
 ---
 
-## 5. Infrastructure Setup
+## 5. Autonomous Agent Profiles and Orchestration
 
-| Component | Observed configuration |
-| --- | --- |
-| Windows host | VMware Workstation host for the Kali guest |
-| Kali VM | Lab workstation used for Hermes installation and operation |
-| Hermes home | `~/.hermes/` for config, skills, and Kanban database paths |
-| Project workspaces | `~/hermes-workspaces/` for persistent task directories |
-| Gateway UI | Local dashboard at `http://127.0.0.1:9119` |
-| Lab account | Shell prompts show `cybergeorge` |
-
-Representative directories used during the session:
-
-```text
-~/.hermes/
-~/.hermes/skills/productivity/sms-custom-sender/
-~/hermes-workspaces/sms-gateway/
-~/hermes-workspaces/dhl-tracking-lab/
-```
-
-### Journey checkpoint: getting the lab online
-
-**Original objective:** Stand up a durable Hermes environment on Kali so autonomous workers could run without depending on a single interactive chat session.
-
-**Initial approach:** Install Hermes on the Kali guest, configure the gateway, and keep the control plane reachable on localhost.
-
-**Obstacles encountered along the way:**
-
-- Host/guest separation meant configuration lived in the VM while documentation and screenshot staging often happened on Windows.
-- Persistent service behavior had to be confirmed operationally (dashboard Gateway Status: Running), not assumed from install completion alone.
-- Later in the session, VMware reported host disk exhaustion against a Kali virtual disk segment, threatening continued execution. See [Incident D](#incident-d--vmware-storage-exhaustion).
-
-**Engineering lesson:** Infrastructure success is not only “software installed.” It includes persistent gateway health, workspace path discipline, and host resource headroom.
-
-Shared-folder transfer between Kali and Windows was later required to gather screenshot evidence for documentation. See [Incident E](#incident-e--cross-platform-screenshot-management).
-
----
-
-## 6. Hermes Agent and Gateway Configuration
-
-### Persistent gateway operation
-
-The Hermes gateway remained available during orchestration sessions. Dashboard captures show Gateway Status: Running, with active session counts changing as workers executed.
-
-### Agent profiles
-
-Profiles define worker behavior and ownership. The `default` profile description visible in the dashboard references offensive security testing and reverse-engineering style work. Additional profiles such as `dhlpackagetracker` were used for specialized task assignment.
-
-### Worker processes and monitoring
-
-Workers are spawned for dispatchable tasks, emit lifecycle events, and can be inspected through the Kanban UI and CLI (`hermes kanban show`, `hermes kanban watch`).
-
-### Gateway responsibilities
-
-Observed responsibilities include:
-
-- Serving the local control dashboard
-- Hosting Kanban orchestration and dispatch controls
-- Loading watchers/notifiers for terminal task events
-- Integrating channel adapters such as Signal
-- Preserving configuration in `~/.hermes/config.yaml`
-
-Kanban configuration observed during investigation included `review_dispatch: true`.
-
-### Journey checkpoint: gateway and notifier discovery
-
-When Signal delivery failed despite completed tasks, the next hypothesis was “gateway notifier misconfiguration.” Source search under the Hermes gateway tree located the Kanban watcher/notifier modules and confirmed the local `kanban:` config block. That investigation is captured in Figure 5 and later proved the transport path existed — the defect was cursor timing, not a missing gateway process.
-
-**Status for gateway operation itself:** Resolved (observed running during orchestration).  
-**Status for first-pass Signal automation:** Failed initially; later Resolved after cursor-aware retesting (see Section 13 and Incident A).
-
----
-
-## 7. Multi-Agent Orchestration
-
-Hermes coordinates specialized roles rather than forcing every task through a single undifferentiated chat session.
+Hermes assigns work to profiles instead of forcing every task through one chat.
 
 | Mechanism | Observed behavior |
 | --- | --- |
-| Specialized roles | `default`, `dhlpackagetracker`, and researcher board context |
-| Task delegation | Operator creates or revises tasks; workers claim assigned work |
-| Worker assignment | Tasks can be assigned to profiles before dispatch |
-| Dependencies | Child tasks remain waiting while parents are unfinished |
-| Execution scheduling | Auto orchestration and dispatcher nudge controls |
-| Task ownership | Assignee and model/profile fields visible on task cards |
+| Profiles | `default` for research, skills, and Signal tests; `dhlpackagetracker` for the child tracking task |
+| Board | `researcher`, 9 tasks at the time of the parent/child captures |
+| Orchestration | Auto, with dispatcher nudge available in the UI |
+| Assignment | Cards show `@default` or `@dhlpackagetracker` |
+| Human gates | Blocked column for work that needs operator input |
+| Dependencies | Child stays in Todo until the parent finishes |
 
-### Journey checkpoint: dispatch vs. dependency waits
+Workers claim a card, bind a workspace, heartbeat, and either complete, block, or wait. A card sitting in Todo is not automatically a stuck dispatcher. In this lab the child card was waiting on its parent. See [section 7](#7-parent-child-task-dependencies).
 
-**Original objective:** Allow specialized workers to execute related work without manual babysitting of every handoff.
+![Parent coordination task in progress on the researcher board with completed work in Done](docs/screenshots/08-parent-task-in-progress.png)
 
-**Obstacle encountered:** A child task remained in Todo while a parent was In Progress. At first glance this looked like a stuck dispatcher.
-
-**Technical evidence:** Board captures show parent `t_5025728e` In Progress and child `t_cd335286` Todo with dependency semantics visible in the UI (Figures 8 and 9).
-
-**Root cause:** Expected dependency behavior, not a failed dispatch loop.
-
-**Engineering lesson:** Multi-agent orchestration requires reading dependency state before declaring a worker or scheduler failure.
+*Figure 8. Hermes Kanban on the `researcher` board with Orchestration: Auto and Gateway Status: Running. Parent `t_5025728e` (“Build a DHL package tracking page.”) is In Progress under `@default`. The Done column holds the completed Signal tests, the local SMS simulator, and the custom-sender skill task.*
 
 ---
 
-## 8. Kanban Task Management
+## 6. Persistent Kanban Task Management
 
-Hermes Kanban provides durable task creation, assignment, dispatch, execution, blocked states, completion, and recovery. Board columns observed during the session include Triage, Todo, Scheduled, Ready, In Progress, Blocked, Review, and Done.
+The board columns observed in the session include Triage, Todo, Scheduled, Ready, In Progress, Blocked, Review, and Done. Task state survives in SQLite, so a worker crash or a closed terminal does not erase the card.
 
-### Completed research and notification workflows
+### Completed research, skill, and notification workflows
 
-| Task ID | Workflow | Observed status |
+| Task ID | Workflow | Observed status | What that status proves |
+| --- | --- | --- | --- |
+| `t_440451bd` | SMS gateway provider research | Done | Kanban completion of the research task |
+| `t_0022291f` | Custom SMS sender skill | Done | Skill built on disk; live signup left human-gated |
+| `t_2d59e102` | Alphanumeric sender ID research | Done | Research recorded the numbering constraint |
+| `t_53e53c1e` | Local SMS gateway simulator | Done | Simulator task completed; not a paid live send |
+| `t_f13e50d6` | Signal notification test | Done | Kanban completion only. No operator Signal message |
+| `t_a23f00c8` | Signal notification test 2 | Done | Kanban completion only. No operator Signal message |
+| `t_8ef3019d` | Signal notification test 3 | Done | End-to-end Signal delivery verified at event 152 |
+
+### Supporting web-application tasks
+
+| Task ID | Role | Last observed state |
 | --- | --- | --- |
-| `t_440451bd` | SMS gateway research | Completed |
-| `t_0022291f` | Custom SMS gateway skill development | Completed |
-| `t_2d59e102` | Alphanumeric sender ID research | Completed |
-| `t_53e53c1e` | Local SMS gateway simulator | Completed |
-| `t_f13e50d6` | Signal notification test | Completed |
-| `t_a23f00c8` | Signal notification test 2 | Completed |
-| `t_8ef3019d` | Controlled Signal integration validation | Completed |
+| `t_5025728e` | Parent coordination task | In Progress after unblock |
+| `t_cd335286` | Child implementation task | Todo, waiting on the parent |
 
-### Supporting web-application orchestration tasks
+![Kanban board with a Ready tracking card and a blocked SMS skill task open in the inspector](docs/screenshots/01-kanban-dhl-task-and-blocked-review.png)
 
-| Task ID | Role | Last observed state in session evidence |
-| --- | --- | --- |
-| `t_5025728e` | Parent coordination task | Running / in progress after unblock |
-| `t_cd335286` | Child implementation task | Todo, waiting on parent |
-
-### Task lifecycle
+*Figure 1. Hermes dashboard at 16:36. Gateway Status: Running, v0.23.1. Ready holds unassigned `t_5025728e`. The inspector is open on blocked `t_0022291f` (“Build skill for top SMS gateway with custom sender names”), assignee `default`, Signal selected under notify channels, parent `t_61dab438`. The worker result says the skill is on disk and that live send still needs a human: email or Signal signup verification, a non-US number that can receive alphanumeric sender IDs, and a brand name. It also records that a US number cannot receive alphanumeric sender IDs on the gateways that were researched.*
 
 ```mermaid
 stateDiagram-v2
@@ -313,150 +263,106 @@ stateDiagram-v2
     Ready --> Dispatched
     Dispatched --> InProgress
     InProgress --> Blocked
-    Blocked --> Ready: operator unblock / revision
+    Blocked --> Ready: operator revision and unblock
     InProgress --> Completed
     Completed --> [*]
-    Ready --> Todo: waiting on dependency
+    Ready --> Todo: waiting on a dependency
     Todo --> Ready: dependency satisfied
 ```
 
-Typical operator flow:
+A Done card proves the worker finished that task. It does not prove an external side effect such as a Signal delivery or a deployed web application.
 
-```bash
-hermes kanban create --title "..." --assignee default --workspace dir:/path --body "..."
-hermes kanban edit TASK_ID --body "..."
-hermes kanban unblock TASK_ID
-hermes kanban dispatch
-hermes kanban show TASK_ID
-hermes kanban list
-hermes kanban watch
+---
+
+## 7. Parent-Child Task Dependencies
+
+**Objective:** Let a parent coordination task and a specialized child task run in order without the operator hand-dispatching every step.
+
+**What looked like a failure:** Child `t_cd335286` stayed in Todo while parent `t_5025728e` was In Progress.
+
+**Root cause:** The child is defined to wait until its parent completes. The dispatcher was not stuck.
+
+**Verified outcome:** Board captures at 19:55 show the expected pair. No dependency override was required. Status: **Resolved** as correct behavior.
+
+![Child task waiting in Todo while the parent remains in progress](docs/screenshots/09-child-task-waiting-on-parent.png)
+
+*Figure 9. Same `researcher` board, scrolled to Todo and In Progress. Child `t_cd335286` (“Build the DHL package tracking demo with optional consent-based location sharing.”) is in Todo, assignee `@dhlpackagetracker`, with the column note that Todo waits on dependencies or is unassigned. Parent `t_5025728e` remains In Progress under `@default`. Gateway Status: Running, two active sessions, Orchestration: Auto.*
+
+---
+
+## 8. Automated Security Research
+
+Hermes executed research cards on the `default` profile and wrote the findings back onto the tasks. The useful outcome was a constraint the agent did not paper over:
+
+- Provider research for gateways that support custom or alphanumeric sender names, preferring low-verification or free tiers.
+- A recorded incompatibility: a US number and an alphanumeric sender ID were not simultaneously available on the gateways that were researched.
+- Explicit human dependencies: account signup verification, a suitable non-US number, and a brand name before any live send.
+
+That is autonomous research used to stop an infeasible live-send path early. It is not a claim that the lab owns production SMS infrastructure.
+
+The same worker pattern later applied to the tracking-demo specification, where the agent blocked requirements that would have collected visitor data without adequate disclosure. See [section 15](#15-security-review-and-human-intervention).
+
+---
+
+## 9. SMS Gateway Provider Investigation
+
+| Task | Result recorded by the worker |
+| --- | --- |
+| `t_440451bd` | Provider research completed |
+| `t_2d59e102` | Alphanumeric sender ID constraints documented |
+| `t_0022291f` | Skill implemented on disk; live registration blocked for human verification |
+
+The blocked skill task is the clearest artifact. The inspector’s final result (Figure 1) states that three things are required before a live send, and that one of the original success criteria cannot be met with a US number. The task was blocked instead of inventing credentials or declaring the criterion passed.
+
+**Status:** Research tasks **Resolved** as completed Kanban work. Live provider onboarding **Mitigated** by leaving signup to the operator and shifting development sends to a local simulator.
+
+---
+
+## 10. Custom Agent Skill Development
+
+The reusable skill lives at:
+
+```text
+~/.hermes/skills/productivity/sms-custom-sender/
 ```
 
-### Journey checkpoint: blocked work is useful, not only failures
+![Terminal at the Hermes sms-custom-sender skill directory](docs/screenshots/03-hermes-skills-directory.png)
 
-Early board state showed a Ready tracking card beside a skill task blocked for human review. Blocking preserved progress while forcing operator decisions about signup verification, numbering constraints, and later security scope.
+*Figure 3. Operator in `~/.hermes/skills/productivity/sms-custom-sender/` before inspecting the skill. The skills directory is the reusable capability layer: later Kanban tasks can call it without rebuilding the gateway.*
 
-![Hermes Kanban dashboard showing a Ready DHL tracking card and a blocked SMS skill review task](docs/screenshots/01-kanban-dhl-task-and-blocked-review.png)
+Local tests covered dry-run behavior, gateway responses, API-key resolution, and sender validation (length, punctuation, country code, and numeric sender rules). The suite finished with 35 tests passing.
 
-*Figure 1. Hermes Kanban board with an unassigned Ready task and a blocked skill-development task under review.*
+![Blocked task worker log for the SMS custom-sender skill](docs/screenshots/02-blocked-task-worker-log.png)
 
-The dashboard demonstrates persistent task state across Ready and Blocked columns, profile-aware assignment, Signal notification channel selection on the task inspector, and human-in-the-loop controls for triage, unblock, complete, and archive actions.
+*Figure 2. Task inspector worker log for the blocked custom-sender skill. The log shows claim and heartbeat activity and the point where the worker stopped for human signup, numbering, and brand-name input instead of continuing into a live send.*
 
-**Important accuracy note about completed Signal tests:** `t_f13e50d6` and `t_a23f00c8` completed as Kanban tasks but did **not** produce operator Signal messages. Kanban completion and notification delivery are separate success criteria. Only the controlled retest `t_8ef3019d` verified end-to-end Signal delivery.
-
----
-
-## 9. Worker Lifecycle and Execution Monitoring
-
-Worker observability is recorded both in the Kanban inspector and in SQLite task events. Typical lifecycle markers include created, assigned, spawned, worker_bound, heartbeat, dependency_wait, and completion/exit summaries.
-
-### Journey checkpoint: autonomous workers still need humans
-
-**Original objective:** Let a worker build and validate an SMS custom-sender skill with minimal interruption.
-
-**Obstacle encountered:** The worker reached a point where live alphanumeric sender registration required human-held resources (signup verification, suitable non-US number, brand name). The task moved to Blocked rather than silently inventing credentials.
-
-**Technical evidence:** Worker log and final-result text request operator action; lifecycle events show claim/heartbeat/dependency wait behavior.
-
-![Blocked Hermes task worker log showing claim, heartbeat, and dependency-related blocking](docs/screenshots/02-blocked-task-worker-log.png)
-
-*Figure 2. Task inspector worker log for a blocked SMS custom-sender skill task.*
-
-The log demonstrates task claims, heartbeat activity, dependency wait behavior, and an explicit human-action request when alphanumeric sender registration could not be completed from a headless worker alone.
-
-**Status:** Mitigated for skill construction (skill built/on disk and later local tests passed); live gateway signup remained human-gated.
-
-### Autonomous worker execution
-
-After requirements revision and unblock, the parent coordination task was observed in the In Progress column while previously completed Signal tests remained in Done.
-
-![Hermes Kanban displaying an active parent task in progress with completed Signal tests in Done](docs/screenshots/08-parent-task-in-progress.png)
-
-*Figure 8. Hermes Kanban displaying an active agent execution workflow for the parent coordination task.*
-
-The board shows persistent in-flight ownership, Auto orchestration, gateway status running, and a Done column containing the completed research and Signal validation tasks.
-
-### Dependency-aware task orchestration
-
-The child implementation task remained in Todo while the parent was unfinished.
-
-![Child Kanban task waiting in Todo while the parent task remains in progress](docs/screenshots/09-child-task-waiting-on-parent.png)
-
-*Figure 9. Child task retained in Todo because its parent dependency had not completed.*
-
-This state is expected dependency behavior, not a dispatcher failure. It shows Hermes preserving execution order across specialized assignees (`@default` for the parent and `@dhlpackagetracker` for the child).
-
-**Status:** Resolved as correct dependency semantics (investigated and confirmed; no defective dispatcher fix required).
+**Status:** Skill construction and local tests **Resolved**. Live alphanumeric registration **Mitigated** (human-gated).
 
 ---
 
-## 10. Automated Security Research
+## 11. Local SMS Gateway Simulation
 
-Hermes was used to automate research tasks related to SMS gateway providers and alphanumeric sender ID constraints.
+Live registration could not be finished from a headless worker. The next task moved development traffic to a local simulator so the skill could be exercised without paid API calls or real SMS.
 
-Observed completed research outcomes include:
+![Passing local skill tests followed by creation of the simulator Kanban task](docs/screenshots/04-local-tests-and-kanban-create.png)
 
-- Provider research for gateways that support custom or alphanumeric sender names
-- Investigation of verification and numbering constraints, including the practical issue that US numbers often cannot receive alphanumeric sender IDs
-- Documentation of human dependencies such as signup verification and brand naming before live send capabilities can be enabled
+*Figure 4. In `~/.hermes/skills/productivity/sms-custom-sender/`, `python3 scripts/test_send_sms.py` reports `Ran 35 tests in 0.781s` and `OK`. The operator then runs `hermes kanban create` titled “Build free local SMS gateway simulator”, assignee `default`, workspace `dir:/home/cybergeorge/hermes-workspaces/sms-gateway`. The task body asks for a local HTTP API that keeps configurable alphanumeric sender names, message history, simulated delivery, and realistic API errors, and it says not to send real SMS or require a paid provider credential.*
 
-### Journey checkpoint: research exposed hard constraints
+That simulator card is `t_53e53c1e`. It later appears in the Done column (Figure 8).
 
-**Original objective:** Identify a workable SMS gateway path for custom sender names.
-
-**Unexpected finding:** Criterion combinations involving US numbers and alphanumeric sender IDs were not simultaneously satisfiable on the researched gateways. The agent recorded that constraint instead of claiming a false success.
-
-**Engineering lesson:** Autonomous research is valuable when it surfaces impossibility conditions early and forces scope revision before paid live sends.
-
-These tasks exercised autonomous research execution under Kanban persistence, not a claim of production SMS infrastructure ownership.
+**Status:** **Resolved** as a completed Kanban task and a deliberate substitute for live sends. A production SMS provider integration was not verified.
 
 ---
 
-## 11. Custom Skill Engineering
+## 12. Signal CLI Integration
 
-Reusable capabilities are packaged as Hermes skills under `~/.hermes/skills/`. The session focused on a productivity skill for SMS custom sender workflows and a follow-on local simulator that avoided paid live sends during development.
-
-![Terminal listing the Hermes sms-custom-sender skills directory path](docs/screenshots/03-hermes-skills-directory.png)
-
-*Figure 3. Operator preparing to inspect `~/.hermes/skills/productivity/sms-custom-sender/`.*
-
-The skills directory is the reusable capability layer for agents. Skills can be tested locally, referenced by later Kanban tasks, and iterated without rebuilding the entire gateway stack.
-
-### Journey checkpoint: local simulation after live-send blockers
-
-Because live alphanumeric registration required human-held resources, the workflow shifted to a free local SMS gateway simulator that preserved skill integration without paid API traffic. That adaptation is a deliberate mitigation path, not a claim that live sender-ID onboarding completed.
-
-The custom skill workflow included local Python tests covering dry-run behavior, gateway response handling, key resolution, and sender validation constraints.
-
----
-
-## 12. Development Workflow and Task Creation
-
-Local validation and Kanban task creation were part of the same operator loop: prove a skill locally, then delegate the next engineering slice to Hermes.
-
-![Local SMS skill tests passing followed by hermes kanban create for a local gateway simulator](docs/screenshots/04-local-tests-and-kanban-create.png)
-
-*Figure 4. Local skill test activity and creation of a Kanban task for a free local SMS gateway simulator.*
-
-This screenshot validates local skill testing and Hermes task creation. It does not validate a DHL web application deployment or acceptance suite.
-
-### Journey checkpoint: documentation and IDE-assisted workflow
-
-Engineering sessions used the Kali Hermes CLI/UI for runtime work and separate documentation passes to capture evidence, redact identifiers, and publish the engineering record. That split workflow later required careful screenshot transfer between Kali and Windows ([Incident E](#incident-e--cross-platform-screenshot-management)). Documentation tooling assisted narrative assembly; runtime truth still came from Hermes CLI output, SQLite inspection, Signal receipt, and the preserved screenshots.
-
----
-
-## 13. Signal Notification Integration
-
-Signal integration is one of the strongest verified engineering outcomes in this lab — and also the clearest example that first attempts failed.
-
-### 13.1 Signal notification architecture
+Signal delivery uses the Hermes Signal adapter and `signal-cli` on the Kali guest. The gateway watcher reads new task events and hands eligible notifications to that adapter.
 
 ```mermaid
 flowchart TD
-    Completion[Task completion]
+    Completion[Task reaches a terminal state]
     Events[(SQLite task_events)]
-    Notifier[Hermes Kanban notifier]
+    Notifier[Kanban notifier watcher]
     Adapter[Signal adapter / signal-cli]
     Device[Operator Signal device]
 
@@ -466,568 +372,364 @@ flowchart TD
     Adapter --> Device
 ```
 
-Pipeline components:
+Pipeline that had to be true at the same time:
 
-1. Signal CLI configuration and linked device transport
-2. Local HTTP daemon / adapter path used by Hermes
-3. Hermes Gateway integration
-4. Kanban notification subscriptions
-5. Notification watcher operation
-6. SQLite task events
-7. Notification cursor / checkpoint behavior
+1. `signal-cli` linked and reachable from Hermes.
+2. Gateway watcher process loaded (`kanban_watchers_notifier.py` on the gateway path).
+3. A notification subscription for the task, platform `signal`.
+4. The subscription existing **before** the completion event.
+5. The notification checkpoint advancing through that event.
+6. The device actually receiving the message.
 
-![Gateway source search for Kanban notifier modules and kanban config inspection](docs/screenshots/05-gateway-kanban-notifier.png)
+Transport availability was not the defect in the first tests. Tasks `t_f13e50d6` and `t_a23f00c8` reached Done, and the gateway modules were present, but the operator device received nothing.
 
-*Figure 5. Investigation of Hermes gateway Kanban watcher/notifier modules and local `kanban` configuration.*
+![Kanban list and a bulk Signal subscribe after several tasks were already done](docs/screenshots/06-signal-subscription-redacted.png)
 
-The capture shows gateway modules such as `kanban_watchers.py`, `kanban_watchers_notifier.py`, and `kanban_watchers_dispatcher.py`, along with `review_dispatch: true` in configuration. This is architectural evidence for the notification path, not by itself proof of message delivery.
+*Figure 6. `hermes kanban list` shows the research, skill, simulator, Signal, and tracking cards, including `t_f13e50d6`, `t_a23f00c8`, and `t_8ef3019d` already in `done`. A following loop calls `hermes kanban notify-subscribe` for those IDs with `--platform signal`. Chat identifiers are redacted. Subscribing after a task is already done does not replay the completion event. This figure documents that timing mistake. The successful delivery is the separate controlled run of `t_8ef3019d` recorded at event 152.*
 
-### 13.2 Full debugging cycle: from silent completions to verified delivery
+---
 
-#### 1. Original objective
+## 13. Automated Signal Completion Notifications
 
-Notify the operator over Signal when a Kanban task reached a terminal completion state, without manually polling the board.
+This is the verified messaging result, and it only became true after the failed tests.
 
-#### 2. Initial approach
+**Task ID:** `t_8ef3019d`  
+**Event ID:** `152`  
+**Last event checkpoint:** `152`  
+**Last notification checkpoint:** `152`  
+**Delivery:** completion message received on the operator’s Signal device
 
-1. Configure Signal CLI / Hermes Signal adapter path.
-2. Create Kanban tasks intended as notification tests (`t_f13e50d6`, `t_a23f00c8`).
-3. Allow workers to complete those tasks.
-4. Expect the gateway Kanban notifier to deliver completion messages.
+### Objective
 
-#### 3. Obstacle encountered
+Notify the operator when a Kanban task completed, without polling the board.
 
-The test tasks completed successfully in Kanban, but no completion messages arrived on the Signal device. From the board alone, the system looked healthy. From the operator’s phone, automation looked broken.
+### Initial attempt
 
-#### 4. Technical evidence
+Configure the Signal adapter, run notification test tasks `t_f13e50d6` and `t_a23f00c8`, and expect the gateway notifier to announce completion.
 
-- Kanban listed the early Signal tests as `done`.
-- Device-side receipt for those early tests did not occur.
-- Later subscription listing showed Signal subscriptions associated with task IDs after work had already finished.
+### Failure
 
-![Hermes kanban list and Signal notify-subscribe confirmations with chat identifiers covered](docs/screenshots/06-signal-subscription-redacted.png)
+Both tasks reached Done. No completion message arrived.
 
-*Figure 6. Task list and Signal notification subscriptions registered against Kanban task IDs.*
+### Investigation
 
-The listing shows completed research and Signal test tasks alongside the later web-application cards. Chat identifiers are redacted in the committed screenshot. This figure is evidence of subscription management activity; it is also part of the timing story because subscriptions registered after completion cannot replay history.
+1. Search the gateway tree for `kanban_watchers`, `KanbanNotify`, and `notify_watcher`.
+2. Read the `kanban:` block in `~/.hermes/config.yaml` (`review_dispatch: true`).
+3. Read completion event IDs in `~/.hermes/kanban.db`.
+4. Compare notification subscriptions and checkpoints with those event IDs.
 
-#### 5. Investigation
+The watcher was loaded. The completion events existed. The subscriptions had been created after those events, so the checkpoint had already moved past them.
 
-Diagnostic work combined code-path discovery and database forensics:
+### Root cause
 
-1. Search gateway sources for Kanban watcher/notifier entry points (`Kanban_watchers`, `KanbanNotify`, `notify_watcher` patterns).
-2. Inspect `~/.hermes/config.yaml` for the `kanban:` block (`review_dispatch: true` observed).
-3. Inspect SQLite task events for completion event IDs.
-4. Compare notification subscriptions and notification cursors against those event IDs.
-5. Determine whether the notifier could ever have observed the terminal events.
+Subscribing to an already-completed task does not replay historical completion events. The notifier had no eligible event left to send. This was an ordering bug in the workflow, not a missing gateway and not a Signal outage.
 
-```bash
-rg -n 'Kanban_watchers|KanbanNotify|notify_watcher' ~/.hermes/Hermes-agent/gateway
-grep -n -A 15 '^kanban:' ~/.hermes/config.yaml
-hermes kanban list
-hermes kanban notify-list
-```
+### Corrective action
 
-SQLite inspection focused on task events, subscription records, and event/notification checkpoints in `~/.hermes/kanban.db`.
-
-#### 6. Root cause
-
-Subscriptions had been created **after** the relevant completion events. Notification cursors therefore started beyond those terminal events. The watcher had nothing eligible to deliver for already-finished work.
-
-**Important operational rule:** Subscribing to an already-completed task does not replay historical completion events.
-
-This was not primarily a Signal CLI outage and not primarily a missing gateway process. It was an event-watermark ordering defect in the automation workflow.
-
-#### 7. Solution
-
-Force subscription-before-completion ordering:
-
-1. Create a validation task with `--initial-status blocked`.
+1. Create the validation task with `--initial-status blocked`.
 2. Register the Signal subscription while the task is still blocked.
 3. Unblock and dispatch so completion happens after the subscription exists.
-4. Compare completion event ID against notification checkpoint after execution.
+4. Compare the completion event ID with the notification checkpoint.
 
-#### 8. Verification
+### Retesting and verified outcome
 
-Task ID: `t_8ef3019d`
-
-Controlled procedure:
-
-1. Create the task with `--initial-status blocked`
-2. Register the Signal subscription while the task is still blocked
-3. Unblock the task and allow Hermes to execute it
-4. Confirm worker completion and expected test artifact write
-5. Verify SQLite completion event **152**
-6. Verify last event checkpoint **152** and last notification checkpoint **152**
-7. Confirm the completion message was received on the Signal device
-
-| Checkpoint | Value |
+| Check | Result |
 | --- | --- |
+| Task | `t_8ef3019d` |
 | Completion event | 152 |
 | Last event checkpoint | 152 |
 | Last notification checkpoint | 152 |
-| Delivery | Confirmed received through Signal |
+| Signal device | Message received |
 
-Matching event and notification checkpoints is the key validation signal: the notifier processed through the completion event rather than skipping past it.
+Matching checkpoints mean the notifier consumed the completion event instead of skipping past it.
 
-**Status:** Resolved.
+**Status:** **Resolved**.
 
-#### 9. Engineering lesson
-
-In event-driven agent systems, “task completed” and “operator notified” are different predicates. Durable success requires proving:
-
-- the terminal event exists,
-- the subscription existed before that event,
-- the notifier cursor advanced through that event,
-- and the external transport delivered the message.
-
-### Operational commands
-
-```bash
-hermes kanban notify-subscribe TASK_ID \
-  --platform signal \
-  --chat-id YOUR_SIGNAL_NUMBER
-
-hermes kanban notify-list
-hermes kanban watch
-hermes kanban list
-```
+Early Done cards `t_f13e50d6` and `t_a23f00c8` remain Kanban successes and notification failures. They are not counted as end-to-end Signal proof.
 
 ---
 
-## 14. SQLite Persistence and Event Analysis
+## 14. SQLite Task Events and Notification Checkpoints
 
-SQLite is the lab's system of record for orchestration forensics.
+`~/.hermes/kanban.db` is the system of record.
 
-| Record type | Role |
+| Record | Role |
 | --- | --- |
-| Tasks | Durable Kanban cards, assignees, statuses, dependencies |
-| Task events | Append-only lifecycle history used for audit and notification eligibility |
-| Notification subscriptions | Platform/chat bindings for specific task IDs |
-| Event / notification cursors | Watermarks controlling which events have been considered for delivery |
+| Tasks | Cards, assignees, statuses, dependencies |
+| Task events | Append-only lifecycle: created, claimed, heartbeat, blocked, completed |
+| Notification subscriptions | Platform and chat binding for a task ID |
+| Event checkpoint | How far the event log has been read |
+| Notification checkpoint | How far the notifier has processed |
 
-### Journey checkpoint: the database told the truth the UI softened
+The board said the early Signal tests had succeeded. The database showed the subscription watermark started after their completion events, so the notifier could never have selected them.
 
-Kanban completion status alone suggested the early Signal tests had succeeded. SQLite event/cursor comparison showed why the operator still received nothing. That distinction is why the lab treats database inspection as a first-class debugging skill rather than an optional admin detail.
+Diagnostic order used in the lab:
 
-Diagnostic pattern used during Signal troubleshooting:
+1. Confirm Kanban status.
+2. Read the completion event ID.
+3. Compare subscription time and checkpoints with that ID.
+4. Decide whether the watcher could have seen the event.
+5. Retest with the subscription created first.
+6. Require event ID, both checkpoints, and device receipt to match.
 
-1. Confirm task completion status in Kanban
-2. Inspect the completion event ID in SQLite
-3. Compare subscription creation time / cursor against that event ID
-4. Determine whether the notifier could ever have seen the terminal event
-5. Re-test with subscription-before-completion ordering
-
-This event-centric approach converted an apparently broken notification channel into a timing/cursor defect with a reproducible fix.
+Event 152 is that match. Detail and the reproduction procedure: [docs/implementation.md](docs/implementation.md) and [docs/testing-validation.md](docs/testing-validation.md).
 
 ---
 
-## 15. Case Study: Security-Aware Web Application Task Orchestration
+## 15. Security Review and Human Intervention
 
-The package-tracking exercise demonstrated agent task decomposition, parent-child dependencies, requirements analysis, security review, human intervention, revised implementation specifications, worker dispatch, and persistent workspace planning. It is a supporting case study inside the Hermes lab, not the primary identity of the repository.
+Two different human gates showed up in the session.
 
-### Observed task pair
+**Skill gate (Figure 1 and Figure 2).** The worker building `sms-custom-sender` stopped because live sender registration needed an inbox or Signal channel the worker did not have, a non-US number, and a brand name. Blocking was the correct outcome.
 
-| Task ID | Role | Notes |
+**Specification gate.** The original tracking-demo task asked for behavior that would have collected visitor and location data without a sufficient consent story, and it described an administrative view with a hardcoded password. The agent blocked that specification. The operator rewrote both task bodies and unblocked the parent.
+
+![Revised parent and child task bodies saved, then the parent unblocked](docs/screenshots/07-revised-specifications-and-unblock.png)
+
+*Figure 7. At 19:42 the operator runs `hermes kanban edit` on `t_5025728e` and `t_cd335286`, replacing the bodies with a clearly labeled demo: official tracking API optional, mock shipment data when no API key is configured, GPS only with explicit consent, tracking still works without GPS, diagnostic collection only with disclosure, admin credentials from the environment, and no hardcoded passwords. `hermes kanban unblock t_5025728e` then reports `Unblocked t_5025728e`.*
+
+The revised parent was later In Progress (Figure 8). The child stayed in Todo (Figure 9).
+
+**Status:** Review and revision controls **Resolved**. The web application itself remains **Outstanding**.
+
+---
+
+## 16. Supporting DHL Web Application Demonstration
+
+The tracking exercise is one case study inside the lab. It showed task decomposition, a security block, a rewritten specification, an unblock, and dependency-aware scheduling. It did not produce a verified application in this repository.
+
+| Task | Assignee | Last observed state |
 | --- | --- | --- |
-| `t_5025728e` | Parent | Coordinate delivery of a package-tracking application workflow |
-| `t_cd335286` | Child | Implement the tracking demo; assigned to `dhlpackagetracker` |
+| `t_5025728e` parent, “Build a DHL package tracking page.” | `@default` | In Progress, 22 hours after creation in the 19:55 capture |
+| `t_cd335286` child, consent-based tracking demo | `@dhlpackagetracker` | Todo |
 
-### Journey checkpoint: security restrictions blocked the first specification
+The revised scope, taken from the edit captured in Figure 7, calls for:
 
-#### 1. Original objective
+- A clearly labeled package-tracking demo.
+- Optional use of DHL’s shipment tracking API, with simulated shipment data when no API key is configured.
+- Location sharing only after explicit informed consent, and a tracking flow that works with GPS denied.
+- An administrative dashboard whose credentials come from the environment.
+- Local testing before any deployment. A Cloudflare Quick Tunnel only if a demo deployment is explicitly approved.
+- Files preserved under `/home/cybergeorge/hermes-workspaces/dhl-tracking-lab`.
 
-Use Hermes to orchestrate implementation of a package-tracking web demonstration with optional location features and an admin view.
-
-#### 2. Initial approach
-
-Create parent/child Kanban tasks and allow autonomous workers to implement from the original task bodies.
-
-#### 3. Obstacle encountered
-
-The original specification proposed a publicly exposed look-alike experience that would collect visitor information without sufficient disclosure, require GPS permission to show tracking information, and expose an administrative log page with a hardcoded password. The agent flagged these requirements and blocked progress pending review.
-
-#### 4–6. Evidence, investigation, and root cause
-
-Task bodies and blocked state made the conflict explicit: the requested behavior violated consent, transparency, and credential-handling expectations for an authorized demonstration. This was a policy/requirements failure, not a compiler error.
-
-#### 7. Solution
-
-Revise the parent and child bodies, then unblock:
-
-```bash
-hermes kanban edit t_5025728e \
-  --body "Build and test a functional package-tracking web application using DHL's official Shipment Tracking API, with a mock mode for demonstrations. Include a responsive tracking interface, shipment history, optional consent-based location sharing, and a secure administrative dashboard. Preserve project files in /home/cybergeorge/hermes-workspaces/dhl-tracking-lab. Coordinate implementation with child task t_cd335286."
-
-hermes kanban edit t_cd335286 \
-  --body "Implement a clearly labeled package-tracking demo with optional DHL API integration. Display realistic simulated shipment information when no API key is configured. Request GPS location only through explicit informed consent; tracking must work without GPS. Collect only necessary diagnostic information with disclosure and consent. Build a secure authenticated admin dashboard with environment-configured credentials, location maps for consented records, and no hardcoded passwords. Test locally before any public deployment. Use Cloudflare Quick Tunnel only for an explicitly approved demo deployment."
-
-hermes kanban unblock t_5025728e
-hermes kanban dispatch
-```
-
-![Revised Hermes task bodies saved, followed by unblock of the parent task](docs/screenshots/07-revised-specifications-and-unblock.png)
-
-*Figure 7. Operator revising parent and child task specifications, then unblocking the parent for resumed execution.*
-
-#### 8. Verification
-
-Edit/unblock CLI output was captured. The parent was later observed In Progress under the revised scope. The child remained Todo waiting on the parent.
-
-#### 9. Engineering lesson
-
-Autonomous implementation without a security gate can encode unsafe product behavior quickly. Human-in-the-loop blocking turned a dangerous specification into a consent-based design before more work accumulated on the wrong target.
-
-**Status:** Resolved for orchestration/security-review controls. Application implementation, deployment, and acceptance testing remain Outstanding / not independently verified.
-
-### Consent-based design requirements
-
-The revised child-task scope called for a clearly labeled package-tracking demo, optional API integration, simulated shipment data when no API key is configured, explicit informed consent for location sharing, and a secure authenticated admin dashboard.
-
-### What this repository does not claim
-
-This repository does not contain evidence of:
-
-- A production DHL integration
-- Public deployment of the demo application
-- Successful application acceptance testing
-- A complete application source tree committed here
-
-The verified claim is orchestration and security-review behavior around those tasks, plus the broader Hermes automation outcomes documented above.
+No application source tree is committed here. There is no evidence in this repository of a production DHL integration, a public deployment, or a passed UI acceptance suite.
 
 ---
 
-## 16. Engineering Challenges, Root-Cause Analysis & Resolutions
+## 17. Engineering Obstacles and Troubleshooting
 
-This section consolidates the major obstacles. Individual incidents are also woven into the chronological sections above so the reader can see when they appeared in the real workflow.
+Each incident is written as: objective, initial attempt, failure, investigation, root cause, corrective action, retesting, and verified outcome. The full tables are in [docs/engineering-challenges.md](docs/engineering-challenges.md).
 
-### Incident summary
-
-| ID | Challenge | Status |
+| ID | Obstacle | Status |
 | --- | --- | --- |
-| A | Missing Signal notifications despite completed tasks | **Resolved** |
-| B | Child task appeared stuck in Todo during parent execution | **Resolved** (correct dependency behavior) |
-| C | Unsafe web-app specification blocked by security review | **Resolved** for review/revision controls; app delivery **Outstanding** |
-| D | VMware host disk exhaustion against Kali VMDK segment | **Investigated**; recovery recommended, not verified |
-| E | Screenshot evidence split across Kali guest and Windows host | **Resolved** for documentation asset handling |
-| F | Live alphanumeric SMS sender onboarding from a headless worker | **Mitigated** via local simulator + human-gated signup requirements |
-| G | Distinguishing Kanban completion from external notification success | **Resolved** by checkpoint-based validation on `t_8ef3019d` |
+| A | Signal tests completed and the phone stayed silent | **Resolved** on `t_8ef3019d` / event 152 |
+| B | Child card looked stuck in Todo | **Resolved** as correct dependency behavior |
+| C | Tracking specification blocked in security review | **Resolved** for the review gate; app delivery **Outstanding** |
+| D | VMware host disk exhaustion on a Kali VMDK segment | **Investigated**; recovery not verified |
+| E | Screenshots split between the Kali guest and the Windows host | **Resolved** for the nine files in this repository |
+| F | Headless worker could not finish live SMS sender signup | **Mitigated** with the local simulator and a human gate |
+| G | A Done column was treated as proof of notification | **Resolved** by requiring event, checkpoint, and device receipt |
 
-### Incident A — Missing Signal Notifications
+### Incident A — Signal notifications
 
-| Stage | Detail |
+| Stage | What happened |
 | --- | --- |
-| Original objective | Deliver Signal messages on Kanban task completion |
-| Initial approach | Run notification test tasks and rely on gateway notifier after completion |
-| Obstacle | Tasks completed; device received no messages |
-| Technical evidence | Done-state Kanban cards; absent device receipt; later subscription listing |
-| Investigation | Gateway notifier source search, config inspection, SQLite event/cursor comparison |
-| Root cause | Subscriptions created after completion events; cursors started beyond eligible events |
-| Solution | Create blocked task → subscribe → unblock/dispatch |
-| Verification | `t_8ef3019d`; completion event 152; event/notification checkpoints 152; Signal receipt confirmed |
-| Engineering lesson | Event watermarks dominate notification correctness |
-| Status | **Resolved** |
+| Objective | Signal the operator when a Kanban task completed |
+| Initial attempt | Run `t_f13e50d6` and `t_a23f00c8` and rely on the gateway notifier |
+| Failure | Cards reached Done; the device received nothing |
+| Investigation | Gateway module search (Figure 5), `config.yaml`, SQLite events and checkpoints, subscription list (Figure 6) |
+| Root cause | Subscriptions were created after the completion events, so the checkpoint started past them |
+| Corrective action | Create the task blocked, subscribe, then unblock and dispatch |
+| Retesting | `t_8ef3019d` |
+| Verified outcome | Event 152, event checkpoint 152, notification checkpoint 152, Signal message received |
 
-Related evidence: Figures 5 and 6; Section 13 debugging cycle.
+### Incident B — Dependency blocking
 
-### Incident B — Kanban Dependency Blocking
-
-| Stage | Detail |
+| Stage | What happened |
 | --- | --- |
-| Original objective | Run parent/child implementation workflow with specialized assignees |
-| Initial approach | Dispatch dependent cards under Auto orchestration |
-| Obstacle | Child remained in Todo while parent was active |
-| Technical evidence | Figures 8 and 9 board state |
-| Investigation | Compared statuses, assignees, and dependency fields |
-| Root cause | Parent unfinished; child correctly waiting |
-| Solution | Continue parent execution; do not force-break dependency order |
-| Verification | Board captures show expected parent/child relationship |
-| Engineering lesson | Dependency waits can look like scheduler bugs |
-| Status | **Resolved** (behavior confirmed correct) |
+| Objective | Run parent and child tasks under Auto orchestration |
+| Initial attempt | Dispatch both cards and expect the child to start |
+| Failure | Child remained in Todo while the parent was In Progress |
+| Investigation | Compared column, assignee, and dependency notes in Figures 8 and 9 |
+| Root cause | The parent was unfinished; the child was waiting, as defined |
+| Corrective action | Leave the dependency in place |
+| Retesting | Board recapture at 19:55 |
+| Verified outcome | `t_5025728e` In Progress, `t_cd335286` Todo. Not a scheduler defect |
 
-### Incident C — Security Review and Task Blocking
+### Incident C — Security review
 
-| Stage | Detail |
+| Stage | What happened |
 | --- | --- |
-| Original objective | Orchestrate a package-tracking demonstration application |
-| Initial approach | Autonomous implementation from the original task bodies |
-| Obstacle | Agent blocked on high-risk collection/access requirements |
-| Technical evidence | Blocked review state; original vs revised bodies; Figure 7 |
-| Investigation | Operator reviewed task text and security implications |
-| Root cause | Spec requested insufficient disclosure, coercive location behavior, insecure admin access |
-| Solution | Rewrite bodies for consent-based design and env-configured credentials; unblock |
-| Verification | Edit/unblock captured; parent later In Progress under revised scope |
-| Engineering lesson | Human-in-the-loop gates are part of secure agent operations |
-| Status | **Resolved** for controls; application delivery **Outstanding** |
+| Objective | Orchestrate a package-tracking demonstration |
+| Initial attempt | Let workers implement the original task bodies |
+| Failure | The agent blocked the specification |
+| Investigation | Operator compared the original bodies with consent, disclosure, and credential expectations |
+| Root cause | The first spec asked for collection and an admin password pattern that were not acceptable for this lab |
+| Corrective action | `hermes kanban edit` on both tasks, then `hermes kanban unblock t_5025728e` (Figure 7) |
+| Retesting | Parent observed In Progress under the revised body |
+| Verified outcome | The review gate worked. Application delivery was not verified |
 
-### Incident D — VMware Storage Exhaustion
+### Incident D — VMware storage
 
-| Stage | Detail |
+| Stage | What happened |
 | --- | --- |
-| Original objective | Keep the Kali lab available for continued Hermes execution |
-| Initial approach | Continue normal VM operation on the Windows host |
-| Obstacle | VMware reported insufficient free space for a Kali virtual disk segment |
-| Technical evidence | Host-side error referencing a path such as `...\kalinov26\kalinov26-000001-s030.vmdk` |
-| Investigation | Identified host filesystem capacity exhaustion rather than a Hermes application fault |
-| Root cause | Windows host disk space exhaustion |
-| Solution recommended | Keep the VMware dialog open, free host space safely, retry; do not manually delete snapshot-chain `.vmdk`/metadata files |
-| Verification | Successful VM recovery was recommended but **not verified** in the available record |
-| Engineering lesson | Agent labs inherit host virtualization constraints |
-| Status | **Investigated** |
+| Objective | Keep the Kali guest available |
+| Initial attempt | Continue normal VM use on the Windows host |
+| Failure | VMware reported insufficient free space for a Kali virtual-disk segment (a path of the form `...\kalinov26\kalinov26-000001-s030.vmdk`) |
+| Investigation | The failure was host filesystem capacity, not a Hermes fault |
+| Root cause | Windows host disk exhaustion |
+| Corrective action | Leave the VMware dialog open, free host space, retry. Do not delete snapshot-chain `.vmdk` files by hand |
+| Retesting | Not completed in the available record |
+| Verified outcome | **Investigated** only |
 
-Useful host-side checks:
+### Incident E — Screenshot transfer
 
-```powershell
-Get-PSDrive C
-Start-Process "ms-settings:storagesense"
-```
-
-### Incident E — Cross-Platform Screenshot Management
-
-| Stage | Detail |
+| Stage | What happened |
 | --- | --- |
-| Original objective | Preserve authentic session evidence in the repository |
-| Initial approach | Capture screenshots during Kali sessions; stage docs from Windows |
-| Obstacle | Evidence lived across guest/host boundaries |
-| Technical evidence | Captures under the Windows Pictures/KaliScreenshots workflow; nine committed images |
-| Investigation | Located transferable captures and verified redactions |
+| Objective | Put authentic session captures in the repository |
+| Initial attempt | Capture inside Kali and write the repository from Windows |
+| Failure | The files were split across guest and host |
+| Investigation | Located the transferable captures and checked that phone numbers were covered |
 | Root cause | Split host/guest documentation workflow |
-| Solution | Transfer via VMware shared folders, redact phone numbers, commit under `docs/screenshots/` |
-| Verification | All nine screenshots present at stable relative paths and embedded in technical sections |
-| Engineering lesson | Evidence handling is part of engineering delivery, not an afterthought |
-| Status | **Resolved** |
+| Corrective action | Copy through VMware shared folders, redact chat identifiers, commit under `docs/screenshots/` |
+| Retesting | All nine files resolve at the paths embedded above |
+| Verified outcome | **Resolved** for this repository’s evidence set |
 
-### Incident F — Live SMS Sender Constraints
+### Incident F — Live SMS signup
 
-| Stage | Detail |
+| Stage | What happened |
 | --- | --- |
-| Original objective | Support custom/alphanumeric sender workflows |
-| Initial approach | Research providers and build `sms-custom-sender` skill for live use |
-| Obstacle | Headless worker could not complete signup verification / suitable numbering / brand requirements; US-number + alphanumeric constraints conflicted |
-| Technical evidence | Figures 1–4; blocked worker result text; local test suite and simulator task |
-| Investigation | Provider research tasks + worker final-result analysis |
-| Root cause | External identity/verification constraints outside autonomous worker control |
-| Solution | Keep skill + local simulator path; leave live signup human-gated |
-| Verification | Local tests observed passing; simulator task completed; live onboarding not claimed complete |
-| Engineering lesson | Autonomous systems need explicit human gates for account/identity actions |
-| Status | **Mitigated** |
+| Objective | Enable custom or alphanumeric sender workflows |
+| Initial attempt | Research providers and build `sms-custom-sender` for live use |
+| Failure | The worker could not complete signup, numbering, or brand requirements |
+| Investigation | Provider tasks plus the blocked worker result in Figures 1 and 2 |
+| Root cause | Account verification sits outside the headless worker, and a US number conflicted with alphanumeric sender IDs |
+| Corrective action | Keep the skill, pass the local tests, add simulator task `t_53e53c1e` |
+| Retesting | 35 tests OK (Figure 4); simulator card later in Done (Figure 8) |
+| Verified outcome | **Mitigated**. Live onboarding was not claimed |
 
-### Incident G — False Confidence from Kanban “Done”
+### Incident G — False confidence from Done
 
-| Stage | Detail |
+| Stage | What happened |
 | --- | --- |
-| Original objective | Treat completed notification tests as proof of Signal automation |
-| Initial approach | Rely on Done-column status for `t_f13e50d6` / `t_a23f00c8` |
-| Obstacle | Done status coexisted with zero device notifications |
-| Technical evidence | Completed cards vs absent Signal receipt; later checkpoint comparison on `t_8ef3019d` |
-| Investigation | Separated Kanban completion from notifier cursor advancement and transport receipt |
-| Root cause | Success criteria were incomplete |
-| Solution | Require event ID + notification checkpoint + device receipt |
-| Verification | Event/checkpoint 152 match and confirmed Signal message |
-| Engineering lesson | Define multi-layer acceptance checks for event-driven integrations |
-| Status | **Resolved** |
+| Objective | Treat finished notification tests as proof of Signal automation |
+| Initial attempt | Read the Done column for `t_f13e50d6` and `t_a23f00c8` |
+| Failure | Done and “no message on the phone” were both true |
+| Investigation | Split Kanban completion from checkpoint movement and transport receipt |
+| Root cause | The success criteria were incomplete |
+| Corrective action | Require event ID, notification checkpoint, and device receipt |
+| Retesting | Event 152 matched both checkpoints and the Signal receipt |
+| Verified outcome | **Resolved** as a validation rule |
 
 ---
 
-## 17. Security Architecture
+## 18. Root-Cause Analysis and Solutions
 
-| Control area | Lab practice / requirement |
-| --- | --- |
-| Isolation | Hermes lab runs in a Kali VM on a Windows host; gateway listened on localhost in observed sessions |
-| Authorization | Human unblock/review gates for blocked work; profile-based task ownership |
-| Credential handling | No secrets committed; Signal chat IDs redacted in screenshots; application credentials required to stay server-side/env-based in the case study |
-| Auditability | SQLite task events and notification checkpoints provide reconstructable history |
-| Privacy | Phone numbers covered before commit; minimize personal data in logs and screenshots |
-| Human oversight | Agents can block for signup, policy, or unsafe-spec reasons; operators revise and release work deliberately |
+The two defects that most looked like product bugs were ordering problems.
 
-Out of scope for this project identity: impersonating commercial brands in production, covert fingerprinting, coercive geolocation prompts, publicly exposing sensitive logs, or shipping hardcoded administrative credentials.
+**Notification watermark.** The notifier stores how far it has read. A subscription created after event N will not be handed event N. The fix is operational: subscribe while the task is still blocked, then release it. The proof is a completion event ID that equals the notification checkpoint, plus the message on the device. For this lab that triple is task `t_8ef3019d`, event 152, checkpoints 152, Signal received.
+
+**Dependency column.** Todo means “not eligible yet” when a parent is open. The fix was to read the dependency instead of nudging the child loose. Figures 8 and 9 are the verification.
+
+**Security block.** The worker stop on the tracking spec was a requirements failure. The fix was to edit the task bodies, then unblock. Figure 7 is the change; Figure 8 is the parent running again. The application that those tasks describe was not then acceptance-tested.
+
+**Host disk and file transfer.** Hermes cannot run if the guest disk chain cannot grow, and evidence cannot be reviewed if it stays on the guest. Both were handled as lab operations, not as agent logic. Only the screenshot transfer was verified afterward.
 
 ---
 
-## 18. Testing and Validation
-
-### Evidence-based validation matrix
+## 19. Verified Testing and Project Completion
 
 | Component | Validation | Result |
 | --- | --- | --- |
-| Hermes Gateway | Service/dashboard operation | Verified |
-| Kanban Engine | Task creation, assignment, and dispatch | Verified |
-| Worker Execution | Lifecycle events and task completion | Verified |
-| SQLite Persistence | Event records and checkpoint inspection | Verified |
-| Custom Skill Workflow | Local tests and completed skill/simulator tasks | Verified |
-| Signal Transport | Direct messaging path available | Verified |
-| Signal Automation | Completion notification delivered for `t_8ef3019d` | Verified |
-| Parent-Child Dependencies | Dependency state observed on board | Verified |
-| Human-in-the-loop controls | Spec revision and unblock captured | Verified |
-| Early Signal test tasks | Kanban completion only | Incomplete as notification proofs |
-| Live alphanumeric SMS onboarding | Account signup / production send | Not verified |
-| VMware recovery after disk exhaustion | Successful resumed VM operation | Not independently verified |
-| DHL / tracking application | Deployment and acceptance testing | Not independently verified |
+| Hermes Gateway | Dashboard Gateway Status: Running, v0.23.1 | Verified |
+| Kanban | Create, assign, block, edit, unblock, dispatch | Verified |
+| Workers | Claim, heartbeat, completion, human block | Verified |
+| SMS research | `t_440451bd`, `t_2d59e102` Done | Verified as completed tasks |
+| Custom skill | Skill directory plus 35 passing local tests | Verified |
+| Local simulator | `t_53e53c1e` created and later Done | Verified as a completed task |
+| Signal transport path | Watcher modules present, subscriptions accepted | Verified |
+| Signal automation | `t_8ef3019d`, event 152, checkpoints 152, device receipt | Verified |
+| Early Signal tests | `t_f13e50d6`, `t_a23f00c8` Done without a device message | Not notification proofs |
+| Dependencies | Parent in progress, child in Todo | Verified |
+| Security review | Spec rewritten and parent unblocked | Verified |
+| Live SMS onboarding | Provider signup and a real send | Not verified |
+| VMware disk recovery | Host space freed and guest resumed | Not verified |
+| Tracking application | UI, API, mock mode, deployment | Not verified |
 
-### Verified engineering checks
+Checked in this lab:
 
-- [x] Hermes Kanban tasks can be created, assigned, and dispatched
-- [x] Task lifecycle events are persisted in SQLite
-- [x] Blocked tasks can be updated and released for execution
-- [x] Worker execution and completion can be observed through the CLI/UI
-- [x] Signal subscriptions can be registered for task events
-- [x] A controlled task completion produced a Signal notification received by the operator
-- [x] Parent-child dependency ordering was observed on the board
-- [x] Unsafe initial application requirements were blocked and revised
-- [x] Early notification failures were explained via event-cursor analysis
+- [x] Kanban tasks can be created, assigned, blocked, edited, unblocked, and dispatched
+- [x] Lifecycle events persist in SQLite
+- [x] Worker execution is visible in the dashboard and the CLI
+- [x] Signal subscriptions can be registered per task
+- [x] One controlled completion produced a Signal message the operator received
+- [x] Parent-child ordering was observed on the board
+- [x] An unsafe initial specification was blocked and revised
+- [x] The silent Signal tests were explained with event checkpoints
 
-### Application acceptance criteria — pending evidence
+Not checked, and not claimed:
 
-- [ ] Tracking interface renders correctly on desktop and mobile
-- [ ] Valid tracking numbers return appropriately formatted shipment data
-- [ ] Mock mode works without a DHL API key
-- [ ] Live API mode keeps provider credentials server-side
-- [ ] Consent and deletion flows are verified
-- [ ] Administrative access controls are tested
-- [ ] Public or tunnel deployment is approved and verified
+- [ ] Tracking UI on desktop or mobile
+- [ ] Shipment data from a live DHL API
+- [ ] Mock mode exercised outside Hermes
+- [ ] Admin authentication tested
+- [ ] Public or tunnel deployment
+- [ ] Live alphanumeric SMS send
+- [ ] Guest recovery after the VMware disk warning
 
-Do not treat the pending application checklist as failed Hermes validation. It is a separate product-acceptance surface that this documentation repository does not claim to have closed.
-
----
-
-## 19. Project Outcomes
-
-What was actually demonstrated:
-
-- Self-hosted autonomous AI infrastructure on Kali Linux using Hermes Agent
-- Multi-agent task ownership through profiles and Kanban assignment
-- Persistent workflow orchestration with blocked, dependent, and completed states
-- Security research automation for SMS gateway and alphanumeric sender constraints
-- Custom skill engineering with local tests and a simulator follow-on task
-- Event-driven Signal notifications with cursor-aware validation after an initial failure
-- SQLite-backed operational observability and incident analysis
-- Human-in-the-loop security review before resuming a high-risk application specification
-- Infrastructure troubleshooting across VMware storage and cross-platform evidence handling
-
-What was not demonstrated in this repository:
-
-- A shipped tracking application binary or complete source tree
-- Production DHL API operation
-- Verified public deployment
-- Application-level acceptance test completion
-- Verified recovery from the VMware disk-exhaustion incident
-- Completed live alphanumeric sender onboarding without human-held account resources
-
-The enduring engineering value is the progression itself:
-
-**Initial Goal → Implementation → Unexpected Failure → Investigation → Root-Cause Analysis → Corrective Action → Retesting → Verified Outcome → Engineering Lessons**
+Reproduction steps for the notification retest: [docs/testing-validation.md](docs/testing-validation.md).
 
 ---
 
-## 20. Reproduction Guide
+## 20. Architecture Diagrams and Future Extensions
 
-This guide reproduces the Hermes and Signal workflow pattern validated in the lab, including the ordering that earlier tests missed. Adjust paths and chat identifiers for your environment.
+The system diagram and the Signal path are in [section 4](#4-hermes-gateway-architecture) and [section 12](#12-signal-cli-integration). The task state machine is in [section 6](#6-persistent-kanban-task-management). A longer component breakdown, including the security boundaries that were actually observed, is in [docs/architecture.md](docs/architecture.md).
 
-### Prerequisites
-
-- Linux lab host or VM with Hermes Agent installed and gateway running
-- Signal CLI linked for the operator destination used by Hermes
-- Access to `hermes` CLI and the Kanban SQLite database path used by your install
-
-### Procedure
-
-1. Confirm gateway health from the dashboard or service status.
-2. Create a controlled task in blocked state:
-
-```bash
-hermes kanban create \
-  --title "Signal notification validation" \
-  --assignee default \
-  --initial-status blocked \
-  --body "Write a small proof artifact and complete successfully."
+```text
+Windows host
+  └── VMware Workstation
+        └── Kali guest (cybergeorge)
+              ├── Hermes Gateway 127.0.0.1:9119
+              │     ├── Profiles (default, dhlpackagetracker)
+              │     ├── Kanban dispatcher
+              │     └── Kanban notifier → signal-cli
+              ├── ~/.hermes/kanban.db
+              ├── ~/.hermes/skills/productivity/sms-custom-sender/
+              └── ~/hermes-workspaces/{sms-gateway,dhl-tracking-lab}
 ```
 
-3. Subscribe before execution:
+Reasonable next work, none of it claimed as done:
 
-```bash
-hermes kanban notify-subscribe TASK_ID \
-  --platform signal \
-  --chat-id YOUR_SIGNAL_NUMBER
-```
+- Approval gates on additional research boards before a worker acts.
+- Skills that package notes and evidence, still with an operator release step.
+- Notification routes that distinguish blocked tasks from completions.
+- A regression check that fails if a subscription checkpoint starts past the latest event.
+- The revised tracking demo, only if someone separately implements and tests it.
 
-4. Unblock and dispatch:
-
-```bash
-hermes kanban unblock TASK_ID
-hermes kanban dispatch
-hermes kanban watch
-```
-
-5. Confirm completion in Kanban, then inspect SQLite event and notification checkpoints.
-6. Confirm the Signal device received the completion message.
-7. For skill work, run local tests before delegating larger follow-on tasks:
-
-```bash
-cd ~/.hermes/skills/productivity/sms-custom-sender
-PYTHONDONTWRITEBYTECODE=1 python3 scripts/test_send_sms.py
-```
-
-### Expected result
-
-The subscription exists before completion, the notifier checkpoint advances through the completion event, and the operator receives the Signal message.
-
-### Common failure mode to avoid
-
-If you subscribe after the task is already `done`, Kanban will still show completion while Signal stays silent. That is the exact failure mode that required the `t_8ef3019d` retest.
+This repository stops at the lab that was actually run.
 
 ---
 
-## 21. Future Engineering Extensions
+## Session Evidence Index
 
-Additional agentic security research capabilities that build naturally on this lab:
+All nine screenshots are original session captures. Paths are unchanged. Each figure above is the captioned copy; this table is the index.
 
-- Broader red-team research boards with stricter approval gates
-- Reusable skills for reconnaissance note-taking, evidence packaging, and report drafting
-- Richer notification routing by severity or board
-- Hardened secret handling and sealed workspace policies
-- Automated regression checks for notification cursor invariants
-- Optional demo application implementation under the revised consent-based specification, if product evidence is desired later
-
----
-
-## 22. Conclusion
-
-This project is an engineering case study of a self-hosted Hermes Agent environment used for autonomous security research support, multi-agent orchestration, persistent Kanban execution, custom skill development, and Signal-based operational notification.
-
-The primary accomplishment is not a shipment-tracking product. It is the configuration, integration, operation, troubleshooting, and validation of an autonomous AI automation lab with durable task state and independently confirmed messaging. Several important outcomes only appeared after failed attempts, database forensics, and deliberate retesting.
-
-The screenshots preserved in `docs/screenshots/` are part of that engineering record. They document the workflow as it actually ran — including blocked reviews, dependency waits, skill development, notifier investigation, specification revision, and the path from silent Signal tests to verified delivery.
-
----
-
-## 23. Suggested Repository Metadata
-
-The existing GitHub repository name can remain unchanged until the owner decides to rename it. Recommended description and topics for the GitHub UI:
-
-**Suggested description:**
-
-> Self-hosted autonomous AI security automation lab using Hermes Agent, multi-agent Kanban orchestration, custom skills, SQLite event tracking, and Signal notifications.
-
-**Suggested topics:**
-
-`hermes-agent`, `agentic-ai`, `cybersecurity`, `security-automation`, `multi-agent-systems`, `kali-linux`, `red-team-lab`, `sqlite`, `signal-cli`, `workflow-orchestration`
-
----
-
-## 24. Session Evidence Index
-
-All screenshots below are preserved at their original paths. They are also embedded beside the corresponding engineering challenges above.
-
-| File | Captured | Engineering role |
+| File | Captured | What it demonstrates |
 | --- | --- | --- |
-| [01-kanban-dhl-task-and-blocked-review.png](docs/screenshots/01-kanban-dhl-task-and-blocked-review.png) | 13 Nov 2026, 16:36 ET | Blocked skill review + Ready board state |
-| [02-blocked-task-worker-log.png](docs/screenshots/02-blocked-task-worker-log.png) | 13 Nov 2026, 16:36 ET | Worker claim/heartbeat and human-gated blocker |
-| [03-hermes-skills-directory.png](docs/screenshots/03-hermes-skills-directory.png) | 13 Nov 2026, 16:39 ET | Custom skill path inspection |
-| [04-local-tests-and-kanban-create.png](docs/screenshots/04-local-tests-and-kanban-create.png) | 13 Nov 2026, 16:58 ET | Local validation then simulator task creation |
-| [05-gateway-kanban-notifier.png](docs/screenshots/05-gateway-kanban-notifier.png) | 13 Nov 2026, 18:36 ET | Notifier investigation during Signal debugging |
-| [06-signal-subscription-redacted.png](docs/screenshots/06-signal-subscription-redacted.png) | 13 Nov 2026, 19:39 ET | Subscription management evidence |
-| [07-revised-specifications-and-unblock.png](docs/screenshots/07-revised-specifications-and-unblock.png) | 13 Nov 2026, 19:42 ET | Security-driven requirements revision |
-| [08-parent-task-in-progress.png](docs/screenshots/08-parent-task-in-progress.png) | 13 Nov 2026, 19:55 ET | Autonomous parent execution after unblock |
-| [09-child-task-waiting-on-parent.png](docs/screenshots/09-child-task-waiting-on-parent.png) | 13 Nov 2026, 19:55 ET | Dependency wait mistaken for stuck work |
+| [01-kanban-dhl-task-and-blocked-review.png](docs/screenshots/01-kanban-dhl-task-and-blocked-review.png) | 13 Nov 2026, 16:36 ET | Running gateway, Ready parent card, blocked skill review |
+| [02-blocked-task-worker-log.png](docs/screenshots/02-blocked-task-worker-log.png) | 13 Nov 2026, 16:36 ET | Worker claim, heartbeat, and the human-gated stop |
+| [03-hermes-skills-directory.png](docs/screenshots/03-hermes-skills-directory.png) | 13 Nov 2026, 16:39 ET | `sms-custom-sender` skill path |
+| [04-local-tests-and-kanban-create.png](docs/screenshots/04-local-tests-and-kanban-create.png) | 13 Nov 2026, 16:58 ET | 35 passing tests, then simulator task creation |
+| [05-gateway-kanban-notifier.png](docs/screenshots/05-gateway-kanban-notifier.png) | 13 Nov 2026, 18:36 ET | Notifier source search and Kanban config |
+| [06-signal-subscription-redacted.png](docs/screenshots/06-signal-subscription-redacted.png) | 13 Nov 2026, 19:39 ET | Subscribe-after-complete, identifiers covered |
+| [07-revised-specifications-and-unblock.png](docs/screenshots/07-revised-specifications-and-unblock.png) | 13 Nov 2026, 19:42 ET | Specification rewrite and parent unblock |
+| [08-parent-task-in-progress.png](docs/screenshots/08-parent-task-in-progress.png) | 13 Nov 2026, 19:55 ET | Parent in progress, completed tasks in Done |
+| [09-child-task-waiting-on-parent.png](docs/screenshots/09-child-task-waiting-on-parent.png) | 13 Nov 2026, 19:55 ET | Child waiting on the unfinished parent |
 
-**Documentation basis:** Hermes CLI output, Kanban board state, worker summaries, SQLite event/checkpoint inspection, Signal delivery confirmation, VMware storage error messages, and the preserved screenshots listed above.
+**Documentation basis:** Hermes CLI output, Kanban board state, worker summaries, SQLite event and checkpoint inspection, Signal delivery confirmation for event 152, the VMware storage error, and these screenshots.
+
+## Conclusion
+
+The project is a self-hosted Hermes Agent lab for autonomous research support, multi-agent orchestration, persistent Kanban execution, custom skills, and Signal notification. The shipment-tracking exercise is a supporting case study that was stopped, rewritten, and only partially resumed.
+
+The result that took the longest to get right is the small one: task `t_8ef3019d` completed as event 152, the notification checkpoint reached 152, and the Signal message arrived. Everything before that completion looked healthy on the board and was still wrong.
