@@ -4,7 +4,7 @@
 
 **Project status:** Self-hosted Hermes Agent environment configured, operated, and validated on Kali Linux. Persistent Kanban orchestration, custom skill workflows, SQLite event tracing, and Signal completion notifications were demonstrated end to end. This repository is an engineering case study with documentation and session evidence. It is not a packaged application release.
 
-**Repository note:** The GitHub repository name remains `enterprise-shipment-tracking-platform` for historical continuity. The engineering focus of this work is the Hermes automation lab. A package-tracking web exercise appears later as a supporting case study only.
+**Repository note:** This repository documents a Hermes Agent autonomous security automation lab. A package-tracking web exercise appears later only as a supporting case study.
 
 **Evidence posture:** Phone numbers visible in the original captures were covered before these files were committed. Shell prompts still show the lab account name. No email addresses appear in the Hermes screenshots.
 
